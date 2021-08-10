@@ -1,0 +1,28 @@
+version: "2"
+services:
+    go-lodger-app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: go_lodger_app
+        restart: always
+        tty: true
+        environment: # enviroment variables that we can use it in my application
+            - APP_DEBBUG=false
+        ports:
+            - 8080:80
+        volumes:
+            - .:/app
+            - /app/vendor
+            - /app/storage/framework/views
+            - /app/storage/framework/sessions
+            - /app/bootstrap/cache
+            - /app/storage/logs
+        dns:
+            - 8.8.8.8 # dns1 for google to make container connected over network
+            - 8.8.4.4 # dns2 for google to make container connected over network
+        networks:
+            - go_lodger # container network
+networks:
+    go_lodger: # network configrations but i didn't need to add all configration like getway ip address w subnet mask
+        external: true
